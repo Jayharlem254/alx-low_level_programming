@@ -1,9 +1,9 @@
-/* 0-putchar.c */
-
 #include <stdio.h>
-#include "unistd.h"  /* This should provide the declaration of the write function. */
 
-int _putchar(char c);  /* Declaration of _putchar function. */
+int _putchar(char c)
+{
+    return write(1, &c, 1);
+}
 
 int main()
 {
