@@ -4,33 +4,23 @@
  * cap_string - Capitalizes all words of a string.
  * @str: The input string to capitalize.
  *
- * Return: A pointer to the resulting string.
+ * Return: A pointer to the resulting capitalized string.
  */
 char *cap_string(char *str)
 {
-	char *ptr = str;
-	int capitalize_next = 1;
+	int i;
+	int capitalize = 1;
+	char *separators = " \t\n,;.!?\"(){}";
 
-	while (*ptr != '\0')
+	for (i = 0; str[i]; i++)
 	{
-		if (*ptr >= 'a' && *ptr <= 'z')
-		{
-			if (capitalize_next)
-			{
-				*ptr = *ptr - ('a' - 'A');
-				capitalize_next = 0;
-			}
-		}
-		else if (*ptr == ' ' || *ptr == '\t' || *ptr == '\n' ||
-			 *ptr == ',' || *ptr == ';' || *ptr == '.' ||
-			 *ptr == '!' || *ptr == '?' || *ptr == '"' ||
-			 *ptr == '(' || *ptr == ')' || *ptr == '{' ||
-			 *ptr == '}')
-		{
-			capitalize_next = 1;
-		}
+		if (capitalize && (str[i] >= 'a' && str[i] <= 'z'))
+			str[i] = str[i] - 'a' + 'A';
 
-		ptr++;
+		if (strchr(separators, str[i]) != NULL)
+			capitalize = 1;
+		else
+			capitalize = 0;
 	}
 
 	return (str);
