@@ -1,85 +1,51 @@
 #include "main.h"
-#include <string.h>
 
 /**
- * reverse_string - Reverses a string
- * @str: The input string to be reversed
- */
-void reverse_string(char *str)
-{
-	int start = 0;
-	int end = strlen(str) - 1;
-	char temp;
-
-	while (start < end)
-	{
-		temp = *(str + start);
-		*(str + start) = *(str + end);
-		*(str + end) = temp;
-		start++;
-		end--;
-	}
-}
-
-/**
- * add_digit - Adds two digits taking into account carry
- * @num1: The first digit
- * @num2: The second digit
- * @carry: Pointer to carry
- * Return: The sum of num1 and num2
- */
-int add_digit(int num1, int num2, int *carry)
-{
-	int sum = num1 + num2 + *carry;
-
-	*carry = sum / 10;
-	return (sum % 10);
-}
-
-/**
- * infinite_add - Adds two numbers
- * @n1: The first number
- * @n2: The second number
- * @r: The buffer to store the result
- * @size_r: The buffer size
+ * infinite_add - Adds two numbers.
+ * @n1: The first number to add.
+ * @n2: The second number to add.
+ * @r: The buffer to store the result.
+ * @size_r: The size of the buffer.
  *
- * Return: Pointer to the result, or 0 if the result cannot be stored
+ * Return: A pointer to the result, or 0 if the result cannot be stored in r.
  */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int len1, len2, max_len, carry = 0, sum;
-	int i;
+	int len1, len2, carry, i, j;
 
-	len1 = strlen(n1);
-	len2 = strlen(n2);
-	max_len = len1 > len2 ? len1 : len2;
+	len1 = len2 = carry = 0;
 
-	if (max_len + 1 > size_r)
+	while (n1[len1 + 1])
+		len1++;
+	while (n2[len2 + 1])
+		len2++;
+
+	if (len1 >= size_r || len2 >= size_r)
 		return (0);
 
-	r[max_len + 1] = '\0';
-	reverse_string(n1);
-	reverse_string(n2);
+	r[size_r - 1] = '\0';
+	i = len1;
+	j = len2;
+	size_r--;
 
-	for (i = 0; i < max_len; i++)
+	while (i >= 0 || j >= 0)
 	{
-		int num1 = i < len1 ? n1[i] - '0' : 0;
-		int num2 = i < len2 ? n2[i] - '0' : 0;
+		if (i >= 0)
+			carry += n1[i--] - '0';
+		if (j >= 0)
+			carry += n2[j--] - '0';
 
-		sum = add_digit(num1, num2, &carry);
-		r[i] = sum + '0';
+		r[size_r--] = (carry % 10) + '0';
+		carry /= 10;
 	}
 
-	if (carry)
+	if (carry && size_r >= 0)
 	{
-		r[max_len] = carry + '0';
-		return (r);
+		r[size_r--] = carry + '0';
+		if (size_r < 0)
+			return (0);
 	}
-	else
-	{
-		r[max_len] = '\0';
-		reverse_string(r);
-		return (r);
-	}
+
+	return (r + size_r + 1);
 }
 
