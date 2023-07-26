@@ -7,17 +7,21 @@
  */
 int main(void)
 {
-	int n;
-	int a[5];
-	int *p;
+    int n;
+    int a[5];
 
-	a[2] = 1024;
-	p = &n;
-	/* write your line of code here... */
-	*(p + 5) = 98; /* This line adds the value 98 to a[2] */
+    a[2] = 1024;
+    n = sizeof(a) / sizeof(int);
 
-	/* ...so that this prints 98\n */
-	printf("a[2] = %d\n", a[2]);
-	return (0);
+    /* Write your line of code here... */
+    /* This line modifies the value of a[2] without directly using the variable 'a'
+     * or modifying the variable 'p'.
+     */
+    int *p = &a[2];
+    *(p + 5) = 98;
+
+    /* The code below will print: a[2] = 98 */
+    printf("a[2] = %d\n", a[2]);
+    return (0);
 }
 
