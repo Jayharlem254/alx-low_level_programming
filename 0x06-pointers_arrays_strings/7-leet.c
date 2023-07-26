@@ -9,31 +9,21 @@
 char *leet(char *str)
 {
 	char *ptr = str;
-	char *letters = "aeotlAEOTL";
-	char *leet_code = "4307143071";
+	char *leet_chars = "aeotlAEOTL";
+	char *leet_codes = "4307143071";
 
-	while (*ptr != '\0')
+	while (*ptr)
 	{
-		char *letter = letters;
-		char *code = leet_code;
-		int found = 0;
+		char *ch = leet_chars;
+		char *code = leet_codes;
 
-		while (*letter != '\0')
-		{
-			if (*ptr == *letter)
-			{
-				*ptr = *code;
-				found = 1;
-				break;
-			}
-			letter++;
-			code++;
-		}
+		for (; *ch && *ptr != *ch; ch++, code++)
+			;
 
-		if (!found)
-			ptr++;
-		else
-			ptr++;
+		if (*ptr == *ch)
+			*ptr = *code;
+
+		ptr++;
 	}
 
 	return (str);
