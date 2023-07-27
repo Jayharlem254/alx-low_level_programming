@@ -6,28 +6,26 @@
  *
  * Return: Pointer to the modified string
  */
+
 char *cap_string(char *str)
 {
-	int i = 0;
+	int i, j;
+	const char sp[13] = {' ', '\t', '\n', ',', ';',
+			    '.', '!', '?', '"', '(', ')', '{', '}'};
 
-	if (str[i] >= 'a' && str[i] <= 'z')
-		str[i] -= 32;
+	if (str[0] >= 'a' && str[0] <= 'z')
+		str[0] = str[0] - 32;
 
-	while (str[i] != '\0')
+	for (i = 1; str[i] != '\0'; i++)
 	{
-		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' ||
-		    str[i] == ',' || str[i] == ';' || str[i] == '.' ||
-		    str[i] == '!' || str[i] == '?' || str[i] == '"' ||
-		    str[i] == '(' || str[i] == ')' || str[i] == '{' || str[i] == '}')
+		for (j = 0; j < 13; j++)
 		{
-			i++;
-			if (str[i] >= 'a' && str[i] <= 'z')
-				str[i] -= 32;
+			if (str[i - 1] == sp[j] && (str[i] >= 'a' && str[i] <= 'z'))
+			{
+				str[i] = str[i] - 32;
+			}
 		}
-
-		i++;
 	}
-
 	return (str);
 }
 
