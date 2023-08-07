@@ -24,11 +24,11 @@ char *argstostr(int ac, char **av)
 			total_length++;
 		total_length++;
 	}
-	
+
 	concatenated = (char *)malloc(total_length + 1);
 	if (concatenated == NULL)
 		return (NULL);
-	
+
 	for (i = 0; av[i] != NULL; i++)
 	{
 		for (j = 0; av[i][j] != '\0'; j++)
