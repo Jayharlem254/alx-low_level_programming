@@ -1,93 +1,62 @@
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-int _putchar(char c);
-
-int is_digit(char *str)
-{
-    while (*str)
-    {
-        if (*str < '0' || *str > '9')
-            return 0;
-        str++;
-    }
-    return 1;
-}
-
+/**
+ * main - Entry point.
+ * @argc: The number of arguments.
+ * @argv: An array of strings containing the arguments.
+ *
+ * Return: Always 0 (Success).
+ */
 int main(int argc, char *argv[])
 {
-    if (argc != 3 || !is_digit(argv[1]) || !is_digit(argv[2]))
+    int i, j, len1, len2, carry, digit1, digit2, result_len;
+    int *result;
+
+    if (argc != 3)
     {
-        char *error_message = "Error\n";
-        while (*error_message)
-        {
-            _putchar(*error_message);
-            error_message++;
-        }
-        exit(98);
+        printf("Error\n");
+        return (98);
     }
 
-    char *num1 = argv[1];
-    char *num2 = argv[2];
+    len1 = len2 = 0;
+    while (argv[1][len1] != '\0')
+        len1++;
+    while (argv[2][len2] != '\0')
+        len2++;
 
-    int len1 = strlen(num1);
-    int len2 = strlen(num2);
-    int result_len = len1 + len2;
-    int *result = malloc(result_len * sizeof(int));
-
+    result_len = len1 + len2;
+    result = calloc(result_len, sizeof(int));
     if (result == NULL)
     {
-        char *error_message = "Error\n";
-        while (*error_message)
-        {
-            _putchar(*error_message);
-            error_message++;
-        }
-        exit(98);
+        printf("Error\n");
+        return (98);
     }
-
-    int i;
-    for (i = 0; i < result_len; i++)
-        result[i] = 0;
 
     for (i = len1 - 1; i >= 0; i--)
     {
-        int j;
+        carry = 0;
+        digit1 = argv[1][i] - '0';
         for (j = len2 - 1; j >= 0; j--)
         {
-            int mul = (num1[i] - '0') * (num2[j] - '0');
-            int sum = mul + result[i + j + 1];
-            result[i + j] += sum / 10;
-            result[i + j + 1] = sum % 10;
+            digit2 = argv[2][j] - '0';
+            result[i + j + 1] += carry + (digit1 * digit2);
+            carry = result[i + j + 1] / 10;
+            result[i + j + 1] %= 10;
         }
+        result[i + j + 1] += carry;
     }
 
-    int first_non_zero = 0;
-    while (first_non_zero < result_len && result[first_non_zero] == 0)
-    {
-        first_non_zero++;
-    }
+    i = 0;
+    while (i < result_len - 1 && result[i] == 0)
+        i++;
 
-    if (first_non_zero == result_len)
-    {
-        _putchar('0');
-    }
-    else
-    {
-        for (i = first_non_zero; i < result_len; i++)
-        {
-            _putchar(result[i] + '0');
-        }
-    }
-    _putchar('\n');
+    for (; i < result_len; i++)
+        putchar(result[i] + '0');
+    putchar('\n');
+
     free(result);
-
-    return 0;
-}
-
-int _putchar(char c)
-{
-    return write(1, &c, 1);
+    return (0);
 }
 
